@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from 'antd';
 import UploadModal from './upload-modal';
+import {motion} from 'framer-motion';
 
 const { Meta } = Card;
 
@@ -19,7 +20,32 @@ const Outputs: React.FC = () => (
 
     <main className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
         {[0,1,2,3].map((_, index) => (
-            <Card key={index}
+           <motion.section initial={{
+            opacity: 0,
+            y: -100,
+           }}
+            whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: {
+                    duration: 0.4 * index,
+                    type: 'spring',
+                    stiffness: 260,
+                    damping: 20,
+                }
+             }}
+            whileHover={{
+                scale: 1.05,
+                rotate: 4,
+                transition: {
+                    duration: 0.5,
+                    type: 'spring',
+                    stiffness: 260,
+                    damping: 20,
+                }
+            }}
+           >
+             <Card key={index}
             cover={
                 <img
                   alt="example"
@@ -42,6 +68,7 @@ const Outputs: React.FC = () => (
                     style={{ width: '100%' }}
                 />
             </Card>
+           </motion.section>
         ))}
     </main>
   </main>

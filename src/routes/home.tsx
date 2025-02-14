@@ -4,7 +4,7 @@ import Outputs from "../components/displayOutput"
 
 const Home = () => {
   return (
-    <div className="min-h-[90vh] max-w-7xl mx-auto px-4 md:px-0">
+    <div className="min-h-[90vh] max-w-7xl mx-auto px-4 md:px-0 pb-12">
         <main className="text-center space-y-4 max-w-2xl mx-auto">
             <div className="flex flex-row gap-1 items-center text-center justify-center border border-pink-500 max-w-[12vh] mx-auto rounded-2xl"><Badge color="magenta" />
                 <p className="text-sm tracking-tight font-medium">AI Project</p>
