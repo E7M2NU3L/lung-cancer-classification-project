@@ -3,6 +3,7 @@ import Navbar from './components/navbar'
 import Home from './routes/home'
 import Docs from './routes/docs'
 import Code from './routes/code'
+import Footer from './components/footer'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/docs" element={<Docs />} />
           <Route path="/code" element={<Code />} />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </>
   )

@@ -1,77 +1,26 @@
-import React from 'react';
-import { Card } from 'antd';
-import UploadModal from './upload-modal';
-import {motion} from 'framer-motion';
+import { useState } from "react";
+import {twMerge} from 'tailwind-merge';
+import CancerCheck from "./cancer-check";
+import NumCancerCheck from "./num-cancer-check";
+import CovidCheck from "./covid-check";
 
-const { Meta } = Card;
+const Outputs = () => {
+    const [selected, setSelected] = useState<string>("cancer");
+    return (
+        <main className="my-12">
+            <main className=" px-4 md:px-0 flex flex-row items-center min-h-[5vh] gap-1">
+                <main className={twMerge("bg-slate-100 hover:scale-105 transition-all duration-200 ease-in-out hover:bg-slate-200 cursor-pointer px-4 py-1 active:translate-y-1 text-sm text-slate-800 border h-full border-slate-300", selected ===  "cancer" && "border-2 border-green-500 hover:bg-green-600/30 bg-green-600/20 text-green-600")} onClick={() => setSelected("cancer")}>Cancer [CT]</main>
 
-const Outputs: React.FC = () => (
-  <main>
-    <main className='flex w-full items-center border border-gray-200 p-4 my-12 justify-between min-h-[10vh] gap-4'>
-        <main className='flex flex-col max-w-2xl'>
-            <h1 className='text-2xl font-medium tracking-tight'>
-                Previous Submissions
-            </h1>
-            <p className='text-sm font-normal tracking-tight text-gray-500 leading-tight whitespace-normal'>go through previous submissions made by fellow HRs to test my applications workflow, feel free to test!</p>
+                <main className={twMerge("bg-slate-100 hover:scale-105 transition-all duration-200 ease-in-out hover:bg-slate-200 cursor-pointer px-4 py-1 active:translate-y-1 text-sm text-slate-800 border h-full border-slate-300", selected ===  "cancer-normal" && "border-2 border-green-500 hover:bg-green-600/30 bg-green-600/20 text-green-600")} onClick={() => setSelected("cancer-normal")}>Cancer</main>
+
+                <main className={twMerge("bg-slate-100 hover:scale-105 transition-all duration-200 ease-in-out hover:bg-slate-200 cursor-pointer px-4 py-1 active:translate-y-1 text-sm text-slate-800 border h-full border-slate-300", selected ===  "covid" && "border-2 border-green-500 hover:bg-green-600/30 bg-green-600/20 text-green-600")} onClick={() => setSelected("covid")} >Covid</main>
+            </main>
+
+            {selected === "cancer" && <CancerCheck />}
+            {selected === "cancer-normal" && <NumCancerCheck />}
+            {selected === "covid" && <CovidCheck />}
         </main>
-
-        <UploadModal />
-    </main>
-
-    <main className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        {[0,1,2,3].map((_, index) => (
-           <motion.section initial={{
-            opacity: 0,
-            y: -100,
-           }}
-            whileInView={{
-                opacity: 1,
-                y: 0,
-                transition: {
-                    duration: 0.4 * index,
-                    type: 'spring',
-                    stiffness: 260,
-                    damping: 20,
-                }
-             }}
-            whileHover={{
-                scale: 1.05,
-                rotate: 4,
-                transition: {
-                    duration: 0.5,
-                    type: 'spring',
-                    stiffness: 260,
-                    damping: 20,
-                }
-            }}
-           >
-             <Card key={index}
-            cover={
-                <img
-                  alt="example"
-                  src="https://www.e7health.com/files/blogs/chest-x-ray-29.jpg"
-                />
-              }
-            >
-                <Meta
-                    title={
-                        <h1 className='text-lg font-medium tracking-tight'>
-                            Output: <span className='text-red-500'>Cancer</span>
-                        </h1>
-                    }
-                    description={
-                        <main className='flex flex-col gap-4'>
-                            <h1 className='text-sm font-normal tracking-tight leading-tight'>description about the image given by the user</h1>
-                            <p className='text-xs font-medium'>Author: HR David</p>
-                        </main>
-                    }
-                    style={{ width: '100%' }}
-                />
-            </Card>
-           </motion.section>
-        ))}
-    </main>
-  </main>
-);
+    )
+};
 
 export default Outputs;

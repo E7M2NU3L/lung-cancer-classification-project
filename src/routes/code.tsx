@@ -112,7 +112,7 @@ const Code = () => {
                                 Developed and tested in Jupyter Notebook using TensorFlow, Keras, OpenCV, NumPy, Matplotlib, and Scikit-Learn for data preprocessing, and model evaluation.  
                             </h1>
                             <Button size="small" color="orange" variant="solid">
-                                <Link to="https://github.com/E7M2NU3L/lung_cancer_detector/blob/master/test/main.py" target="_blank">View Evaluations</Link>
+                                <Link to="https://github.com/E7M2NU3L/lung_cancer_detector/tree/master/test" target="_blank">View Evaluations</Link>
                             </Button>
                         </main>
                     }
