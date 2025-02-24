@@ -30,24 +30,12 @@ export async function ClassifyImage(values : CreateCovidTypes) {
 
 export async function FetchAllClassifications() {
     try {
-        let endpoint : string;
-        const environment = import.meta.env.VITE_NODE_ENV;
-        if (environment === "deployment") {
-            endpoint = import.meta.env.VITE_BASE_URL ?? "http://localhost:8000";
-        }
-        else {
-            endpoint = import.meta.env.VITE_BASE_URL ?? "https://cvp-rust.vercel.app";
-        }
+        let endpoint = import.meta.env.VITE_BASE_URL ?? "http://localhost:8000";
 
-        const response = await axios.get(
-            endpoint + "/api/v1/classifiers/covid-check"
-        );
-        console.log(response.data);
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
+        const response = await axios.get(`${endpoint}/api/v1/classifiers/covid-check`);
+        console.log("API Response:", response.data); // Debugging log
 
-        return response.data;
+        return response.data; // ✅ Ensure function returns response data
     } catch (error) {
         appErr.appErrServer(error);
     }

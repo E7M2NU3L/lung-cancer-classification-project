@@ -1,11 +1,7 @@
-import { useCancerManual } from "../hooks/use-cancer"
 import UploadModal from "./upload-modal";
 import LungCancerTable from "./output-table";
 
 const NumCancerCheck = () => {
-    const {data} = useCancerManual();
-    console.log(data);
-
     return (
     <div>
         <main className='flex w-full items-center border border-gray-200 p-4 my-12 justify-between min-h-[10vh] gap-4'>

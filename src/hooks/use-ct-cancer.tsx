@@ -16,19 +16,20 @@ export const useCtCancer = () => {
 
     const refetch = () => {
         queryclient.invalidateQueries({
-            queryKey : ['fetch-covid-results']
+            queryKey : ['fetch-cancer-ct-results']
         });
     }
 
     const {data, isPending} = useQuery({
-        queryKey : ['fetch-covid-results'],
-        queryFn : FetchAllClassifications
+        queryKey : ['fetch-cancer-ct-results'],
+        queryFn : FetchAllClassifications,
+        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     });
 
     const Create = useMutation({
         mutationFn : (values : CreateCancerTypes) => ClassifyImage(values),
         mutationKey : [
-            'create-result-covid'
+            'create-result-cancer-ct'
         ],
         onSuccess : () => {
             refetch();
@@ -41,7 +42,7 @@ export const useCtCancer = () => {
             data : UpdateCancerTypes
         }) => UpdateClassification(values.id, values.data),
         mutationKey : [
-            'update-result-covid',
+            'update-result-cancer-ct',
         ],
         onSuccess : () => {
             refetch();
@@ -51,7 +52,7 @@ export const useCtCancer = () => {
     const Delete = useMutation({
         mutationFn : (id : string) => DeleteClassification(id),
         mutationKey : [
-            'delete-result-covid',
+            'delete-result-cancer-ct',
         ],
         onSuccess : () => {
             refetch();

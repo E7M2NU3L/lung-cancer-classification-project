@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { CreateCanerManualTypes, UpdateCanerManualTypes } from '../types/app-types';
 import { appErr } from '../utils/app-err';
 
@@ -28,31 +28,19 @@ export async function ClassifyImage(values : CreateCanerManualTypes) {
     }
 };
 
-export async function FetchAllClassifications() : Promise<AxiosResponse | undefined> {
+export async function FetchAllClassifications() {
     try {
-        let endpoint : string;
-        const environment = import.meta.env.VITE_NODE_ENV;
-        if (environment === "deployment") {
-            endpoint = import.meta.env.VITE_BASE_URL ?? "http://localhost:8000";
-        }
-        else {
-            endpoint = import.meta.env.VITE_BASE_URL ?? "https://cvp-rust.vercel.app";
-        }
+        let endpoint = import.meta.env.VITE_BASE_URL ?? "http://localhost:8000";
 
-        const response = await axios.get(
-            endpoint + "/api/v1/classifiers/cancer-check"
-        );
+        const response = await axios.get(`${endpoint}/api/v1/classifiers/cancer-check`);
+        console.log("API Response:", response.data); // Debugging log
 
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
-        console.log(response.data);
-
-        return response;
+        return response.data; // ✅ Ensure function returns response data
     } catch (error) {
         appErr.appErrServer(error);
     }
 };
+
 
 export async function FetchSingleClassification(id: string) {
     try {

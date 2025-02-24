@@ -29,29 +29,33 @@ export async function ClassifyImage(values : CreateCancerTypes) {
 };
 
 export async function FetchAllClassifications() {
+    let endpoint: string;
+    const environment = import.meta.env.VITE_NODE_ENV;
+
+    // Proper conditional check for deployment environment
+    if (environment === "deployment") {
+        endpoint = import.meta.env.VITE_BASE_URL ?? "https://cvp-rust.vercel.app";
+    } else {
+        endpoint = import.meta.env.VITE_BASE_URL ?? "http://localhost:8000";
+    }
+
     try {
-        let endpoint : string;
-        const environment = import.meta.env.VITE_NODE_ENV;
-        if (environment === "deployment") {
-            endpoint = import.meta.env.VITE_BASE_URL ?? "http://localhost:8000";
-        }
-        else {
-            endpoint = import.meta.env.VITE_BASE_URL ?? "https://cvp-rust.vercel.app";
+        const response = await axios.get(`${endpoint}/api/v1/classifiers/cancer-check-ct`);
+
+        console.log("API Response:", response.data);
+
+        // ✅ Correct status check
+        if (response.status !== 200 && response.status !== 201) {
+            throw new Error(response.data.error || "Unexpected response status");
         }
 
-        const response = await axios.get(
-            endpoint + "/api/v1/classifiers/cancer-check-ct"
-        );
-        console.log(response.data);
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
-
-        return response;
+        return response.data; // ✅ Return only the data, not the entire response
     } catch (error) {
+        console.error("Error fetching classifications:", error);
         appErr.appErrServer(error);
     }
-};
+}
+
 
 export async function FetchSingleClassification(id: string) {
     try {

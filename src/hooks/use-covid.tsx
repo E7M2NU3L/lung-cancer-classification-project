@@ -22,7 +22,7 @@ export const useCovid = () => {
 
     const {data, isPending} = useQuery({
         queryKey : ['fetch-covid-results'],
-        queryFn : FetchAllClassifications
+        queryFn : FetchAllClassifications,
     });
 
     const Create = useMutation({

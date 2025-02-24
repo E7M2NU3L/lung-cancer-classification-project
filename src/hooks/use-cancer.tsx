@@ -21,14 +21,14 @@ export const useCancerManual = () => {
     }
 
     const {data, isPending} = useQuery({
-        queryKey : ['fetch-covid-results'],
-        queryFn : FetchAllClassifications
+        queryKey : ['fetch-cancers-results'],
+        queryFn : FetchAllClassifications,
     });
 
     const Create = useMutation({
         mutationFn : (values : CreateCanerManualTypes) => ClassifyImage(values),
         mutationKey : [
-            'create-result-covid'
+            'create-result-cancers'
         ],
         onSuccess : () => {
             refetch();
@@ -41,7 +41,7 @@ export const useCancerManual = () => {
             data : UpdateCanerManualTypes
         }) => UpdateClassification(values.id, values.data),
         mutationKey : [
-            'update-result-covid',
+            'update-result-cancers',
         ],
         onSuccess : () => {
             refetch();
@@ -51,7 +51,7 @@ export const useCancerManual = () => {
     const Delete = useMutation({
         mutationFn : (id : string) => DeleteClassification(id),
         mutationKey : [
-            'delete-result-covid',
+            'delete-result-cancers',
         ],
         onSuccess : () => {
             refetch();
