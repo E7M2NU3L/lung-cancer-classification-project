@@ -23,7 +23,6 @@ export const useCtCancer = () => {
     const {data, isPending} = useQuery({
         queryKey : ['fetch-cancer-ct-results'],
         queryFn : FetchAllClassifications,
-        staleTime: 1000 * 60 * 5, // Cache for 5 minutes
     });
 
     const Create = useMutation({

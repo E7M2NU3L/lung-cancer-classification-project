@@ -1,11 +1,13 @@
-import { Card, Modal, Pagination } from "antd";
+import { Card, Pagination } from "antd";
 import { useCtCancer } from "../hooks/use-ct-cancer";
 import UploadModal from "./upload-modal";
 import {motion} from 'framer-motion';
-import {DeleteOutlined, EditOutlined} from '@ant-design/icons'
+import {DeleteOutlined, EditOutlined, Loading3QuartersOutlined} from '@ant-design/icons'
 import { Button, message, Popconfirm } from 'antd';
 import type { PaginationProps, PopconfirmProps } from 'antd';
-import { useState } from "react";
+import React, { useState } from "react";
+import { CovidProps } from "../types/app-types";
+import EditCancerCT from "./edit-cancer-ct";
 
 const confirm: PopconfirmProps['onConfirm'] = (e) => {
   console.log(e);
@@ -27,20 +29,12 @@ const CancerCheck = () => {
         setIsModalOpen(true);
     };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
-
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         console.log('Page: ', pageNumber);
       };
 
-    const {data} = useCtCancer();
-    console.log(data?.data);
+    const {data, isPending} = useCtCancer();
+    console.log(data);
     return (
         <div>
         <main className='flex w-full items-center border border-gray-200 p-4 my-12 justify-between min-h-[10vh] gap-4'>
@@ -55,11 +49,29 @@ const CancerCheck = () => {
     </main>
 
     <main className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-        {[0,1,2,3].map((_, index) => (
+       {isPending && (
+        <Card>
+            <Meta title={
+                <h1 className="text-2xl font-semibold tracking-tight whitespace-normal text-slate-900">
+                    <Loading3QuartersOutlined className="h-4 w-4 mr-2 animate-spin" />
+                    Please Wait
+                </h1>
+            }
+            description={
+                <p className="text-sm font-medium text-slate-900 tracking-tight whitespace-normal leading-tight">Loading the content from the db, please be patient</p>
+            }
+            />
+        </Card>
+       )}
+
+       {data && (
+        <React.Fragment>
+             {data?.map((content : CovidProps, index : number) => (
            <motion.section initial={{
             opacity: 0,
             y: -100,
            }}
+           key={index}
             whileInView={{
                 opacity: 1,
                 y: 0,
@@ -85,21 +97,24 @@ const CancerCheck = () => {
             cover={
                 <img
                   alt="example"
-                  src="https://www.e7health.com/files/blogs/chest-x-ray-29.jpg"
+                  src={content?.image_url ?? ""}
                 />
               }
             >
                 <Meta
                     title={
-                        <h1 className='text-lg font-medium tracking-tight'>
-                            Output: <span className='text-red-500'>Cancer</span>
-                        </h1>
+                        <span className='font-semibold'>Result:  {content?.output === "Benign" && <span className='bg-yellow-600/20 rounded-lg px-3 py-[1px] border border-yellow-600 text-yellow-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content.output}</span>}
+                        {content?.output === "Malignant" && <span className='bg-orange-600/20 rounded-lg px-3 py-[1px] border border-orange-600 text-orange-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content.output}</span>}
+                        {content?.output === "Cancer" && <span className='bg-red-600/20 rounded-lg px-3 py-[1px] border border-red-600 text-red-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content?.output}</span>}
+                         </span>
                     }
                     description={
                         <main className='flex flex-col gap-4'>
-                            <h1 className='text-sm font-normal tracking-tight leading-tight'>description about the image given by the user</h1>
+                            <h1 className='text-sm font-normal tracking-tight leading-tight'>{content?.description}</h1>
                             <main className="flex justify-between gap-4 flex-wrap items-center">
-                            <p className='text-xs font-medium'>Author: HR David</p>
+                            <p className='text-xs font-medium'>Author: <span className="hover:underline hover:translate-y-1 hover:scale-105 transition-all duration-200 ease-in-out active:-translate-y-1">
+                                {content?.author ?? ""}
+                                </span></p>
 
                             <main className="gap-3 flex flex-row items-center">
                                 <Button color="blue" variant="outlined" size="small" onClick={showModal}>
@@ -122,18 +137,18 @@ const CancerCheck = () => {
                     style={{ width: '100%' }}
                 />
             </Card>
-           </motion.section>
-        ))}
 
-        <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-        </Modal>
+            {!isPending && (
+                <EditCancerCT content={content} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+            )}
+           </motion.section>
+        ))}          
+        </React.Fragment>
+       )}
     </main>
 
     <main className="my-6 flex justify-center items-center w-full">
-    <Pagination showQuickJumper defaultCurrent={2} total={500} onChange={onChange} />
+    <Pagination showQuickJumper defaultCurrent={1} total={isPending ? 0 : data?.length} onChange={onChange} />
     </main>
     </div>
   )

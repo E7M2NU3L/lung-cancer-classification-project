@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Alert, Button, Input, Modal } from 'antd';
 import ImageDragger from './image-dragger';
-import { CreateCancerTypes } from '../types/app-types';
-import { CreateCancerCheckSchema } from '../schemas/cancer-ct';
+import { CreateCovidTypes } from '../types/app-types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import TextArea from 'antd/es/input/TextArea';
 import { LoadingOutlined } from '@ant-design/icons';
+import { CreateCovidCheckSchema } from '../schemas/covid';
 
-const UploadModal = () => {
+const UploadModalCovid = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const showModal = () => {
@@ -20,8 +20,8 @@ const UploadModal = () => {
       handleSubmit,
       formState: { errors, isSubmitting },
       setValue
-  } = useForm<CreateCancerTypes>({
-      resolver: zodResolver(CreateCancerCheckSchema),
+  } = useForm<CreateCovidTypes>({
+      resolver: zodResolver(CreateCovidCheckSchema),
       defaultValues: {
           author: '',
           description: '',
@@ -29,7 +29,7 @@ const UploadModal = () => {
       },
   });
 
-    const onSubmit: SubmitHandler<CreateCancerTypes> = async (data) => {
+    const onSubmit: SubmitHandler<CreateCovidTypes> = async (data) => {
       try {
           console.log("Form submitted with data:", data);
           // Add API call here
@@ -43,9 +43,9 @@ const UploadModal = () => {
       <>
 
         <Button color='magenta' variant='solid' size='middle' onClick={showModal}>
-          Check
+          Check Covid
         </Button>
-        <Modal onCancel={() => setIsModalOpen(false)} title="Lung Cancer Detection with CT Images" open={isModalOpen} footer={null}>
+        <Modal onCancel={() => setIsModalOpen(false)} title="Check whether you have Covid" open={isModalOpen} footer={null}>
         
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 my-6">
                 <div className='space-y-1'>
@@ -94,4 +94,4 @@ const UploadModal = () => {
     );
 }
 
-export default UploadModal
+export default UploadModalCovid

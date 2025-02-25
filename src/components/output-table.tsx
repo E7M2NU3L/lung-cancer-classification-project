@@ -69,8 +69,53 @@ const LungCancerTable = () => {
       },
     }
   ];
+
+  const columnsSmall : TableProps<LungCancerData>["columns"] = [
+    {
+      title: "Gender",
+      dataIndex: "gender",
+      key: "gender",
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "Lung Cancer",
+      dataIndex: "lung_cancer",
+      key: "lung_cancer",
+      render: (text) => (
+        <Tag color={text === "YES" ? "red" : "green"}>{text}</Tag>
+      ),
+    },
+    {
+      title : "Actions",
+      dataIndex: "id",
+      key: "id",
+      render: (id) => {
+          if (isPending) {
+            return (
+              <main className="text-sm text-gray-800">
+                Loading...
+              </main>
+            );
+          }
+          else {
+            return <OutputActions data={data as LungCancerData[]} id={id} />
+          };
+      },
+    }
+  ];
   return (
-    <Table<LungCancerData> columns={columns} dataSource={data} rowKey="id" />
+    <main>
+      <main className="block md:hidden">
+      <Table<LungCancerData> columns={columnsSmall} dataSource={data} rowKey="id" />
+      </main>
+      <main className="hidden md:block">
+      <Table<LungCancerData> columns={columns} dataSource={data} rowKey="id"  />
+      </main>
+    </main>
   )
 };
 

@@ -1,4 +1,4 @@
-import {DeleteOutlined, EditOutlined, FolderViewOutlined} from '@ant-design/icons'
+import {DeleteOutlined, FolderViewOutlined} from '@ant-design/icons'
 import { Button, message, Modal, Popconfirm } from 'antd';
 import type { PopconfirmProps } from 'antd';
 import { useState } from "react";
@@ -12,7 +12,6 @@ const OutputActions = ({data, id} : {
     const currentData = data.filter((dat) => dat.id === id)[0];
     console.log(currentData);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -24,10 +23,6 @@ const OutputActions = ({data, id} : {
 
     const handleCancel = () => {
         setIsModalOpen(false);
-    };
-
-    const showModalEdit = () => {
-        setIsEditModalOpen(true);
     };
     const {Delete} = useCancerManual();
 
@@ -47,9 +42,6 @@ const OutputActions = ({data, id} : {
         <main className="gap-3 flex flex-row items-center">
             <Button color="cyan" variant="solid" size="small" onClick={showModal}>
                 <FolderViewOutlined />
-            </Button>
-            <Button color="blue" variant="outlined" size="small" onClick={showModalEdit}>
-                <EditOutlined />
             </Button>
             <Popconfirm
                 title="Delete History"
@@ -93,12 +85,6 @@ const OutputActions = ({data, id} : {
                     <h1 className='text-2xl font-semibold'>Result:  {currentData.lung_cancer === "NO" ? <span className='bg-green-600/20 rounded-lg px-3 py-[1px] border border-green-600 text-green-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>Normal</span> : <span className='bg-red-600/20 rounded-lg px-3 py-[1px] ml-2 border border-red-600 text-red-600 cursor-pointer active:translate-y-1 leading-0 '>Cancer</span>} </h1>
                 </main>
             </main>
-        </Modal>
-
-        <Modal title="Edit Item" open={isEditModalOpen} onOk={() => setIsEditModalOpen(false)} onCancel={() => setIsEditModalOpen(false)}>
-            <p>Some Edit contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
         </Modal>
     </main>
   )

@@ -1,5 +1,5 @@
-import UploadModal from "./upload-modal";
 import LungCancerTable from "./output-table";
+import CheckCancerManual from "./check-cancer-normal";
 
 const NumCancerCheck = () => {
     return (
@@ -12,7 +12,7 @@ const NumCancerCheck = () => {
             <p className='text-sm font-normal tracking-tight text-gray-500 leading-tight whitespace-normal'>go through previous submissions made by fellow HRs to test my applications workflow, feel free to test!</p>
         </main>
 
-        <UploadModal />
+        <CheckCancerManual />
     </main>
 
     <LungCancerTable />
