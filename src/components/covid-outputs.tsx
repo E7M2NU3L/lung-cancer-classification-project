@@ -1,19 +1,19 @@
-import { Card, Pagination } from "antd";
-import { useCtCancer } from "../hooks/use-ct-cancer";
-import UploadModal from "./upload-modal";
-import {motion} from 'framer-motion';
-import { EditOutlined, Loading3QuartersOutlined} from '@ant-design/icons'
-import { Button } from 'antd';
-import type { PaginationProps } from 'antd';
+import { Button, Card, Pagination, PaginationProps } from "antd"
+import UploadModalCovid from "./covid-check"
+import { EditOutlined, Loading3QuartersOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import { CovidProps } from "../types/app-types";
-import EditCancerCT from "./edit-cancer-ct";
-import DeleteCancerCt from "./delete-cancer";
+import { motion } from 'framer-motion'
+import EditCovidModal from "./edit-covid";
+import { useCovid } from "../hooks/use-covid";
+import DeleteCovid from "./delete-covid";
 
-const {Meta} = Card;
+const { Meta } = Card;
 
-const CancerCheck = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+const CovidOutputs = () => {
+
+    const {data, isPending} = useCovid();
+
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
     const showModal = () => {
         setIsModalOpen(true);
@@ -22,20 +22,17 @@ const CancerCheck = () => {
     const onChange: PaginationProps['onChange'] = (pageNumber) => {
         console.log('Page: ', pageNumber);
       };
-
-    const {data, isPending} = useCtCancer();
-    console.log(data);
-    return (
-        <div>
+  return (
+    <div>
         <main className='flex w-full items-center border border-gray-200 p-4 my-12 justify-between min-h-[10vh] gap-4'>
         <main className='flex flex-col max-w-2xl'>
             <h1 className='text-2xl font-medium tracking-tight'>
-                Check with CT Images
+                Check with C-Xrays
             </h1>
             <p className='text-sm font-normal tracking-tight text-gray-500 leading-tight whitespace-normal'>go through previous submissions made by fellow HRs to test my applications workflow, feel free to test!</p>
         </main>
 
-        <UploadModal />
+        <UploadModalCovid />
     </main>
 
     <main className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
@@ -56,7 +53,7 @@ const CancerCheck = () => {
 
        {data && (
         <React.Fragment>
-             {data?.map((content : CovidProps, index : number) => (
+             {data?.map((content : any, index : number) => (
            <motion.section initial={{
             opacity: 0,
             y: -100,
@@ -93,9 +90,7 @@ const CancerCheck = () => {
             >
                 <Meta
                     title={
-                        <span className='font-semibold'>Result:  {content?.output === "Benign" && <span className='bg-yellow-600/20 rounded-lg px-3 py-[1px] border border-yellow-600 text-yellow-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content.output}</span>}
-                        {content?.output === "Malignant" && <span className='bg-orange-600/20 rounded-lg px-3 py-[1px] border border-orange-600 text-orange-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content.output}</span>}
-                        {content?.output === "Cancer" && <span className='bg-red-600/20 rounded-lg px-3 py-[1px] border border-red-600 text-red-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content?.output}</span>}
+                        <span className='font-semibold'>Result:  {content?.output === "Normal" ? <span className='bg-green-600/20 rounded-lg px-3 py-[1px] border border-green-600 text-green-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content.output}</span> : <span className='bg-red-600/20 rounded-lg px-3 py-[1px] border border-red-600 text-red-600 cursor-pointer leading-[0px] ml-2 active:translate-y-1'>{content?.output}</span>}
                          </span>
                     }
                     description={
@@ -110,7 +105,7 @@ const CancerCheck = () => {
                                 <Button color="blue" variant="outlined" size="small" onClick={showModal}>
                                     <EditOutlined />
                                 </Button>
-                                <DeleteCancerCt id={String(content?.id)} />
+                                <DeleteCovid id={content?.id} />
                             </main>
                             </main>
                         </main>
@@ -120,7 +115,7 @@ const CancerCheck = () => {
             </Card>
 
             {!isPending && (
-                <EditCancerCT content={content} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
+                <EditCovidModal content={content} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen}/>
             )}
            </motion.section>
         ))}          
@@ -135,4 +130,4 @@ const CancerCheck = () => {
   )
 }
 
-export default CancerCheck
+export default CovidOutputs

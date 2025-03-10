@@ -1,4 +1,8 @@
-import axios from 'axios';
+import { CodeBlock } from "./code-block"
+
+const AxiosApi = () => {
+
+    const cancerApi = `import axios from 'axios';
 import { CreateCancerTypes, UpdateCancerTypes } from '../types/app-types';
 import { appErr } from '../utils/app-err';
 
@@ -36,7 +40,7 @@ export async function FetchAllClassifications() {
     }
 
     try {
-        const response = await axios.get(`${endpoint}/api/v1/classifiers/cancer-check-ct`);
+        const response = await axios.get("{endpoint}/api/v1/classifiers/cancer-check-ct");
 
         console.log("API Response:", response.data);
 
@@ -112,4 +116,22 @@ export async function UpdateClassification(id: string, values: UpdateCancerTypes
     } catch (error) {
         appErr.appErrServer(error);
     }
+}`
+
+  return (
+    <div>
+        <h1 className="text-3xl font-semibold tracking-tight">API Integration with Axios</h1>
+        <p className="text-sm font-normal tracking-normal leading-tight whitespace-normal">the communication between Frontend and Backend is established with axios and proper headers and data is sent and received accordingly</p>
+
+        <main className="max-w-6xl py-6 mx-auto w-full">
+            <CodeBlock
+                language="ts"
+                filename="cancer-api.ts"
+                code={cancerApi}
+            />
+        </main>
+    </div>
+  )
 }
+
+export default AxiosApi

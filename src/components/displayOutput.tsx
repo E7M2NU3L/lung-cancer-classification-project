@@ -2,7 +2,7 @@ import { useState } from "react";
 import {twMerge} from 'tailwind-merge';
 import CancerCheck from "./cancer-check";
 import NumCancerCheck from "./num-cancer-check";
-import CovidCheck from "./covid-check";
+import CovidOutputs from "./covid-outputs";
 
 const Outputs = () => {
     const [selected, setSelected] = useState<string>("cancer");
@@ -18,7 +18,7 @@ const Outputs = () => {
 
             {selected === "cancer" && <CancerCheck />}
             {selected === "cancer-normal" && <NumCancerCheck />}
-            {selected === "covid" && <CovidCheck />}
+            {selected === "covid" && <CovidOutputs />}
         </main>
     )
 };

@@ -18,10 +18,6 @@ export async function ClassifyImage(values : CreateCovidTypes) {
             values
         );
 
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
-
         return response.data;
     } catch (error) {
         appErr.appErrServer(error);
@@ -59,10 +55,6 @@ export async function FetchSingleClassification(id: string) {
         const singleResponse = response.data.filter((classification : any) => classification !== null && classification.id !== id);
         console.log(singleResponse);
 
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
-
         return response.data;
     } catch (error) {
         appErr.appErrServer(error);
@@ -83,11 +75,6 @@ export async function DeleteClassification(id: string) {
         const response = await axios.delete(
             endpoint + "/api/v1/classifiers/covid-check/" + id
         );
-
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
-
         return response.data;
     } catch (error) {
         appErr.appErrServer(error);
@@ -105,14 +92,10 @@ export async function UpdateClassification(id: string, values: UpdateCovidTypes)
             endpoint = import.meta.env.VITE_BASE_URL ?? "https://cvp-rust.vercel.app";
         }
 
-        const response = await axios.post(
+        const response = await axios.put(
             endpoint + "/api/v1/classifiers/covid-check/" + id,
             values
         );
-
-        if (response.status != 200 || 201) {
-            throw new Error(response.data.error);
-        }
 
         return response.data;
     } catch (error) {

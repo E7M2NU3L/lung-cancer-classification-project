@@ -16,7 +16,7 @@ export const useCancerManual = () => {
 
     const refetch = () => {
         queryclient.invalidateQueries({
-            queryKey : ['fetch-covid-results']
+            queryKey : ['fetch-cancers-results']
         });
     }
 

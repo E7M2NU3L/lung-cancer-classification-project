@@ -6,6 +6,7 @@ import { Alert, Input, Modal } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
+import { useCovid } from '../hooks/use-covid';
 
 const EditCovidModal = ({ isModalOpen, setIsModalOpen, content }: { 
     isModalOpen: boolean; 
@@ -25,6 +26,7 @@ const EditCovidModal = ({ isModalOpen, setIsModalOpen, content }: {
         },
         mode : 'onChange'
     });
+    const {Update} = useCovid();
 
     // Reset form values when modal opens
     useEffect(() => {
@@ -39,6 +41,10 @@ const EditCovidModal = ({ isModalOpen, setIsModalOpen, content }: {
     const onSubmit: SubmitHandler<UpdateCovidTypes> = async (data) => {
         try {
             console.log("Form submitted with data:", data);
+            await Update.mutateAsync({
+                id : String(content?.id),
+                data : data
+            });
             // Add API call here
             setIsModalOpen(false);
         } catch (error) {

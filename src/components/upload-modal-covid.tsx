@@ -3,7 +3,7 @@ import { Alert, Button, Input, Modal } from 'antd';
 import ImageDragger from './image-dragger';
 import { CreateCovidTypes } from '../types/app-types';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import TextArea from 'antd/es/input/TextArea';
 import { LoadingOutlined } from '@ant-design/icons';
 import { CreateCovidCheckSchema } from '../schemas/covid';
@@ -16,17 +16,19 @@ const UploadModalCovid = () => {
     };
 
     const {
-      register,
+      control,
       handleSubmit,
       formState: { errors, isSubmitting },
-      setValue
+      setValue,
+      reset,
+      clearErrors
   } = useForm<CreateCovidTypes>({
       resolver: zodResolver(CreateCovidCheckSchema),
-      defaultValues: {
-          author: '',
-          description: '',
-          image_url : ''
-      },
+      defaultValues : {
+        author : "",
+        description : "",
+        image_url : ""
+      }
   });
 
     const onSubmit: SubmitHandler<CreateCovidTypes> = async (data) => {
@@ -36,6 +38,9 @@ const UploadModalCovid = () => {
           setIsModalOpen(false);
       } catch (error) {
           console.error("Error submitting form:", error);
+      } finally {
+        clearErrors();
+        reset();
       }
     };
   
@@ -48,17 +53,29 @@ const UploadModalCovid = () => {
         <Modal onCancel={() => setIsModalOpen(false)} title="Check whether you have Covid" open={isModalOpen} footer={null}>
         
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 my-6">
-                <div className='space-y-1'>
-                    <label className='text-sm font-medium text-slate-800 tracking-tight'>Author</label>
-                    <Input {...register("author")} />
-                    {errors.author && <Alert type='error' message={errors.author.message} />}
-                </div>
+                <div className="space-y-1">
+                    <label className="text-sm font-medium text-slate-800 tracking-tight">
+                        Author
+                    </label>
+                    <Controller
+                        name="author"
+                        control={control}
+                        render={({ field }) => <Input {...field} />}
+                    />
+                    {errors.author && <Alert type="error" message={errors.author.message} />}
+                    </div>
 
-                <div className='space-y-1'>
-                    <label className='text-sm font-medium text-slate-800 tracking-tight'>Description</label>
-                    <TextArea {...register("description")}  />
-                    {errors.description && <Alert type='error' message={errors.description.message} />}
-                </div>
+                    <div className="space-y-1">
+                    <label className="text-sm font-medium text-slate-800 tracking-tight">
+                        Description
+                    </label>
+                    <Controller
+                        name="description"
+                        control={control}
+                        render={({ field }) => <TextArea {...field} />}
+                    />
+                    {errors.description && <Alert type="error" message={errors.description.message} />}
+                    </div>
 
                 <div className='space-y-1'>
                     <label className='text-sm font-medium text-slate-800 tracking-tight'>Upload CT File</label>

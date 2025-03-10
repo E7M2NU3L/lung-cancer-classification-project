@@ -6,6 +6,7 @@ import TextArea from 'antd/es/input/TextArea';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useEffect } from 'react';
 import { UpdateCancerCheckSchema } from '../schemas/cancer-ct';
+import { useCtCancer } from '../hooks/use-ct-cancer';
 
 const EditCancerCT = ({ isModalOpen, setIsModalOpen, content }: { 
     isModalOpen: boolean; 
@@ -36,10 +37,17 @@ const EditCancerCT = ({ isModalOpen, setIsModalOpen, content }: {
         }
     }, [content, reset]);
 
+    const {Update} = useCtCancer();
+
     const onSubmit: SubmitHandler<UpdateCancerTypes> = async (data) => {
         try {
             console.log("Form submitted with data:", data);
             // Add API call here
+            await Update.mutateAsync({
+                id : String(content?.id),
+                data : data    
+            });
+            reset();
             setIsModalOpen(false);
         } catch (error) {
             console.error("Error submitting form:", error);
